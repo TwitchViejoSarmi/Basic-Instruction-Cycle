@@ -57,25 +57,33 @@ class CPU{
     }
 
     void ADD(char *address1, char *address2, char *address3){
-        // Move the pointer of the string to the next char ('Dn' -> 'D', n).
-        int convertedaddress1 = stoi(address1+1);
-        int convertedaddress2 = stoi(address2+1);
-        int convertedaddress3 = stoi(address3+1);
 
         // OPTION 1: ADD ADDR NULL NULL.
         if (strcmp(address1, "NULL") != 0 && strcmp(address2, "NULL") == 0 && strcmp(address3, "NULL") == 0) {
+            // Move the pointer of the string to the next char ('Dn' -> 'D', n).
+            int convertedaddress1 = stoi(address1+1);
+
             this->accumulator = this->accumulator + this->Memory[convertedaddress1-1];
             strcpy(this->MAR, address1); // Copy the address to the MAR.
             this->MDR = this->Memory[convertedaddress1-1];
         }
         // OPTION 2: ADD ADDR1 ADDR2 NULL.
         else if (strcmp(address1, "NULL") != 0 && strcmp(address2, "NULL") != 0 && strcmp(address3, "NULL") == 0) {
+            // Move the pointer of the string to the next char ('Dn' -> 'D', n).
+            int convertedaddress1 = stoi(address1+1);
+            int convertedaddress2 = stoi(address2+1);
+
             this->accumulator = this->Memory[convertedaddress1-1] + this->Memory[convertedaddress2-1];
             strcpy(this->MAR, address2);
             this->MDR = this->Memory[convertedaddress2-1];
         }
         // OPTION 3: ADD ADDR1 ADDR2 ADDR3.
         else {
+            // Move the pointer of the string to the next char ('Dn' -> 'D', n).
+            int convertedaddress1 = stoi(address1+1);
+            int convertedaddress2 = stoi(address2+1);
+            int convertedaddress3 = stoi(address3+1);
+
             this->accumulator = this->Memory[convertedaddress1-1] + this->Memory[convertedaddress2-1];
             this->Memory[convertedaddress3-1] = this->accumulator;
             strcpy(this->MAR, address3);
@@ -154,14 +162,40 @@ vector<char*> split(const char* s, char delimiter) {
 }
 
 int main() {
+    CPU *cpu = new CPU();
+
     // Program 1:
     cout << "PROGRAM 1:" << endl;
     ifstream file1("input/programa1.txt"); // Abre el primer archivo.
-    char* line; // Tamaño de la línea
+    char line[256]; // Tamaño de la línea
 
     if (file1.is_open()) { // Verifica si el archivo se abrió correctamente
         while (file1.getline(line, sizeof(line))) { // Lee cada línea del archivo
-            cout << line << endl; // Imprime la línea en la consola
+            vector<char*> instruction = split(line, ' ');
+            if (strcmp(instruction[0], "SET") == 0){
+                cpu->SET(instruction[1], instruction[2]);
+            }
+            else if (strcmp(instruction[0], "LDR") == 0) {
+                cpu->LDR(instruction[1]);
+            }
+            else if (strcmp(instruction[0], "ADD") == 0) {
+                cpu->ADD(instruction[1], instruction[2], instruction[3]);
+            }
+            else if (strcmp(instruction[0], "INC") == 0) {
+                cpu->INC(instruction[1]);
+            }
+            else if (strcmp(instruction[0], "DEC") == 0) {
+                cpu->DEC(instruction[1]);
+            }
+            else if (strcmp(instruction[0], "STR") == 0) {
+                cpu->STR(instruction[1]);
+            }
+            else if (strcmp(instruction[0], "SHW") == 0) {
+                cpu->SHW(instruction[1]);
+            }
+            else if (strcmp(instruction[0], "PAUSE") == 0) {
+                cpu->PAUSE();
+            }
         }
         file1.close(); // Cierra el archivo después de leerlo
     } else {
