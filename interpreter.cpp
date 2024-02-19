@@ -167,11 +167,11 @@ int main() {
     // Program 1:
     cout << "PROGRAM 1:" << endl;
     ifstream file1("input/programa1.txt"); // Abre el primer archivo.
-    char line[256]; // Tamaño de la línea
+    char line1[256]; // Tamaño de la línea
 
     if (file1.is_open()) { // Verifica si el archivo se abrió correctamente
-        while (file1.getline(line, sizeof(line))) { // Lee cada línea del archivo
-            vector<char*> instruction = split(line, ' ');
+        while (file1.getline(line1, sizeof(line1))) { // Lee cada línea del archivo
+            vector<char*> instruction = split(line1, ' ');
             if (strcmp(instruction[0], "SET") == 0){
                 cpu->SET(instruction[1], instruction[2]);
             }
@@ -198,6 +198,82 @@ int main() {
             }
         }
         file1.close(); // Cierra el archivo después de leerlo
+    } else {
+        cerr << "Unable to open file 1." << endl; // Mensaje de error si no se puede abrir el archivo
+    }
+
+    // Program 2:
+    cout << "PROGRAM 2:" << endl;
+    ifstream file2("input/programa2.txt"); // Abre el primer archivo.
+    char line2[256]; // Tamaño de la línea
+
+    if (file2.is_open()) { // Verifica si el archivo se abrió correctamente
+        while (file2.getline(line2, sizeof(line2))) { // Lee cada línea del archivo
+            vector<char*> instruction = split(line2, ' ');
+            if (strcmp(instruction[0], "SET") == 0){
+                cpu->SET(instruction[1], instruction[2]);
+            }
+            else if (strcmp(instruction[0], "LDR") == 0) {
+                cpu->LDR(instruction[1]);
+            }
+            else if (strcmp(instruction[0], "ADD") == 0) {
+                cpu->ADD(instruction[1], instruction[2], instruction[3]);
+            }
+            else if (strcmp(instruction[0], "INC") == 0) {
+                cpu->INC(instruction[1]);
+            }
+            else if (strcmp(instruction[0], "DEC") == 0) {
+                cpu->DEC(instruction[1]);
+            }
+            else if (strcmp(instruction[0], "STR") == 0) {
+                cpu->STR(instruction[1]);
+            }
+            else if (strcmp(instruction[0], "SHW") == 0) {
+                cpu->SHW(instruction[1]);
+            }
+            else if (strcmp(instruction[0], "PAUSE") == 0) {
+                cpu->PAUSE();
+            }
+        }
+        file2.close(); // Cierra el archivo después de leerlo
+    } else {
+        cerr << "Unable to open file 1." << endl; // Mensaje de error si no se puede abrir el archivo
+    }
+
+    // Program 3:
+    cout << "PROGRAM 3:" << endl;
+    ifstream file3("input/programa3.txt"); // Abre el primer archivo.
+    char line3[256]; // Tamaño de la línea
+
+    if (file3.is_open()) { // Verifica si el archivo se abrió correctamente
+        while (file3.getline(line3, sizeof(line3))) { // Lee cada línea del archivo
+            vector<char*> instruction = split(line3, ' ');
+            if (strcmp(instruction[0], "SET") == 0){
+                cpu->SET(instruction[1], instruction[2]);
+            }
+            else if (strcmp(instruction[0], "LDR") == 0) {
+                cpu->LDR(instruction[1]);
+            }
+            else if (strcmp(instruction[0], "ADD") == 0) {
+                cpu->ADD(instruction[1], instruction[2], instruction[3]);
+            }
+            else if (strcmp(instruction[0], "INC") == 0) {
+                cpu->INC(instruction[1]);
+            }
+            else if (strcmp(instruction[0], "DEC") == 0) {
+                cpu->DEC(instruction[1]);
+            }
+            else if (strcmp(instruction[0], "STR") == 0) {
+                cpu->STR(instruction[1]);
+            }
+            else if (strcmp(instruction[0], "SHW") == 0) {
+                cpu->SHW(instruction[1]);
+            }
+            else if (strcmp(instruction[0], "PAUSE") == 0) {
+                cpu->PAUSE();
+            }
+        }
+        file3.close(); // Cierra el archivo después de leerlo
     } else {
         cerr << "Unable to open file 1." << endl; // Mensaje de error si no se puede abrir el archivo
     }
