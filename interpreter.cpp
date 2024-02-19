@@ -1,20 +1,36 @@
 #include <iostream>
+#include <sstream>
+#include <vector>
 #include <string>
 #include <cstring>
 #include <cstdlib>
+#include <fstream>
 #define MEMSIZE 512
 
 using namespace std;
 
 class CPU{
-    public:
+    private:
     int Memory[MEMSIZE];
     int accumulator;
-    char UC[20];
     char ICR[20];
     char MAR[5];
     int MDR;
     bool is_paused;
+    public:
+    char UC[20];
+
+    CPU(){
+        this->accumulator = 0;
+        this->UC[0] = '\0';
+        this->ICR[0] = '\0';
+        this->MAR[0] = '\0';
+        this->MDR = 0;
+        this->is_paused = false;
+    }
+
+    // Destructor.
+    ~CPU(){}
 
     void SET(char *address, char *num) {
         // Move the pointer of the string to the next char ('Dn' -> 'D', n).
@@ -83,33 +99,34 @@ class CPU{
     }
 
     void SHW(char *address){
-        if (address[0] == 'D'){
-            // Move the pointer of the string to the next char ('Dn' -> 'D', n).
-            int convertedaddress = stoi(address+1);
-            printf("%d\n", this->Memory[convertedaddress-1]);
-        }
-        else{
-            if (!this->is_paused){
-                if (strcmp(address, "ACC")==0){
-                    printf("%d\n", this->accumulator);
-                }
-                else if (strcmp(address, "MAR")==0){
-                    printf("%d\n", this->MAR);
-                }
-                else if (strcmp(address, "MDR")==0){
-                    printf("%d\n", this->MDR);
-                }
-                else if (strcmp(address, "ICR")==0){
-                    printf("%d\n", this->ICR);
-                }
-                else if (strcmp(address, "UC")==0){
-                    printf("%d\n", this->UC);
-                }
-            }
-        }        
-
-        return;
+    if (address[0] == 'D'){
+        // Move the pointer of the string to the next char ('Dn' -> 'D', n).
+        int convertedaddress = stoi(address+1);
+        cout << this->Memory[convertedaddress-1] << endl;
     }
+    else{
+        if (!this->is_paused){
+            if (strcmp(address, "ACC")==0){
+                cout << this->accumulator << endl;
+            }
+            else if (strcmp(address, "MAR")==0){
+                cout << this->MAR << endl;
+            }
+            else if (strcmp(address, "MDR")==0){
+                cout << this->MDR << endl;
+            }
+            else if (strcmp(address, "ICR")==0){
+                cout << this->ICR << endl;
+            }
+            else if (strcmp(address, "UC")==0){
+                cout << this->UC << endl;
+            }
+        }
+    }        
+
+    return;
+}
+
 
     void PAUSE(){
         if (this->is_paused){
@@ -118,5 +135,39 @@ class CPU{
         else{
             this->is_paused = true;
         }
+        return;
     }
 };
+
+
+// Function extracted from internet to simulate the split function of Python.
+vector<char*> split(const char* s, char delimiter) {
+    vector<char*> tokens;
+    char* token = strtok(const_cast<char*>(s), &delimiter);
+    
+    while (token != nullptr) {
+        tokens.push_back(token);
+        token = strtok(nullptr, &delimiter);
+    }
+    
+    return tokens;
+}
+
+int main() {
+    // Program 1:
+    cout << "PROGRAM 1:" << endl;
+    ifstream file1("input/programa1.txt"); // Abre el primer archivo.
+    char* line; // Tamaño de la línea
+
+    if (file1.is_open()) { // Verifica si el archivo se abrió correctamente
+        while (file1.getline(line, sizeof(line))) { // Lee cada línea del archivo
+            cout << line << endl; // Imprime la línea en la consola
+        }
+        file1.close(); // Cierra el archivo después de leerlo
+    } else {
+        cerr << "Unable to open file 1." << endl; // Mensaje de error si no se puede abrir el archivo
+    }
+    return 0;
+}
+
+main();
